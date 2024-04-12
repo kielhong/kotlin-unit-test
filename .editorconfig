@@ -1,0 +1,6 @@
+# ktlint 설정 파일
+root = true
+
+[*.{kt,kts}]
+# for `in` package name
+ktlint_standard_package-name = disabled
