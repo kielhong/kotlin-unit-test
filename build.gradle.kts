@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("org.springframework.boot") version Libs.Versions.SPRING_BOOT
@@ -7,13 +7,12 @@ plugins {
     kotlin("plugin.spring") version Libs.Versions.KOTLIN
     kotlin("plugin.jpa") version Libs.Versions.KOTLIN
     id("org.jlleitschuh.gradle.ktlint") version Libs.Versions.KTLINT
+    id("org.jetbrains.kotlinx.kover") version Libs.Versions.KOVER
 }
-
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -32,16 +31,18 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest:kotest-property:${Libs.Versions.KOTEST}")
     testImplementation("io.mockk:mockk:${Libs.Versions.MOCKK}")
-    runtimeOnly("com.h2database:h2")
+    testRuntimeOnly("com.h2database:h2")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+kotlin {
+    compilerOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 }

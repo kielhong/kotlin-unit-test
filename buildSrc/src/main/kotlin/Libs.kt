@@ -7,5 +7,6 @@ object Libs {
         const val DETEKT = "1.23.5"
         const val KOTEST = "5.8.1"
         const val MOCKK = "1.13.10"
+        const val KOVER = "0.7.6"
     }
 }
