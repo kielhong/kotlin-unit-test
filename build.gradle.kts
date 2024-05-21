@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.jpa") version Libs.Versions.KOTLIN
     id("org.jlleitschuh.gradle.ktlint") version Libs.Versions.KTLINT
     id("org.jetbrains.kotlinx.kover") version Libs.Versions.KOVER
+    `java-test-fixtures`
 }
 
 java {
@@ -30,7 +31,10 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest:kotest-assertions-core:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest:kotest-property:${Libs.Versions.KOTEST}")
+    testImplementation("io.kotest:kotest-framework-datatest:${Libs.Versions.KOTEST}")
+    testImplementation("io.kotest.extensions:kotest-extensions-spring:${Libs.Versions.KOTEST_EXTENSION_SPRING}")
     testImplementation("io.mockk:mockk:${Libs.Versions.MOCKK}")
+    testImplementation("com.ninja-squad:springmockk:${Libs.Versions.SPRING_MOCKK}")
     testRuntimeOnly("com.h2database:h2")
 }
 

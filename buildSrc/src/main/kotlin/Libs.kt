@@ -6,7 +6,9 @@ object Libs {
         const val KTLINT = "12.1.0"
         const val DETEKT = "1.23.5"
         const val KOTEST = "5.8.1"
+        const val KOTEST_EXTENSION_SPRING = "1.1.3"
         const val MOCKK = "1.13.10"
+        const val SPRING_MOCKK = "4.0.2"
         const val KOVER = "0.7.6"
     }
 }
