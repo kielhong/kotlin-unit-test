@@ -1,3 +1,16 @@
 package com.example.demo.article.adapter.out
 
-class ArticlePersistenceAdapter
+import com.example.demo.article.application.port.out.LoadArticlePort
+import com.example.demo.article.domain.Article
+import org.springframework.stereotype.Component
+
+@Component
+class ArticlePersistenceAdapter : LoadArticlePort {
+    override fun findArticleById(id: Long): Article? {
+        TODO("Not yet implemented")
+    }
+
+    override fun findArticlesByBoardId(boardId: Long): List<Article> {
+        TODO("Not yet implemented")
+    }
+}
