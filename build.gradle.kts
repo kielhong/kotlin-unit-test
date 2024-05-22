@@ -50,3 +50,11 @@ tasks {
         useJUnitPlatform()
     }
 }
+
+koverReport {
+    filters {
+        excludes {
+            classes("*Application*")
+        }
+    }
+}
