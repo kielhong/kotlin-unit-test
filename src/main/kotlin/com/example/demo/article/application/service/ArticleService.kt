@@ -8,7 +8,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ArticleService : GetArticleUseCase {
     @Transactional(readOnly = true)
-    override fun getArticle(id: Long): Article? {
+    override fun getArticle(id: Long): Article {
+        TODO("Not yet implemented")
+    }
+
+    @Transactional(readOnly = true)
+    override fun getArticlesByBoardId(boardId: Long): List<Article> {
         TODO("Not yet implemented")
     }
 }

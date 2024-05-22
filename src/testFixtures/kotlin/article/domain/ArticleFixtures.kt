@@ -3,9 +3,9 @@ package article.domain
 import com.example.demo.article.domain.Article
 
 object ArticleFixtures {
-    fun article() =
+    fun article(id: Long = 1L) =
         Article(
-            id = 1L,
+            id = id,
             board = BoardFixtures.board(),
             title = "title",
             content = "content",

@@ -56,5 +56,43 @@ class ArticleControllerSpec : DescribeSpec() {
                 }
             }
         }
+
+        describe("GET /api/articles?boardId={boardId}") {
+            context("article 들이 존재하면") {
+                it("article list 반환") {
+                    val articles = (1L..3L).map { ArticleFixtures.article(it) }
+                    every { getArticleUseCase.getArticlesByBoardId(any()) } returns articles
+
+                    mockMvc
+                        .get("/api/articles?boardId=1")
+                        .andExpect {
+                            status { isOk() }
+                            content {
+                                jsonPath("$.size()") { value(3) }
+                                jsonPath("$[0].id") { value(1L) }
+                                jsonPath("$[0].board.id") { value(articles[0].board.id) }
+                                jsonPath("$[0].board.name") { value(articles[0].board.name) }
+                                jsonPath("$[0].title") { value(articles[0].title) }
+                                jsonPath("$[0].content") { value(articles[0].content) }
+                            }
+                        }
+                }
+            }
+
+            context("article 들이 존재하지 않으면") {
+                every { getArticleUseCase.getArticlesByBoardId(any()) } returns emptyList()
+
+                it("empty list 반환") {
+                    mockMvc
+                        .get("/api/articles?boardId=1")
+                        .andExpect {
+                            status { isOk() }
+                            content {
+                                jsonPath("$.size()") { value(0) }
+                            }
+                        }
+                }
+            }
+        }
     }
 }
