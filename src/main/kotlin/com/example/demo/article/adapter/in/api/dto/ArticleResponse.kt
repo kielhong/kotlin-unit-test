@@ -11,7 +11,7 @@ data class ArticleResponse(
     companion object {
         fun from(article: Article) =
             ArticleResponse(
-                id = article.id,
+                id = article.id!!,
                 board = BoardResponse.from(article.board),
                 title = article.title,
                 content = article.content,

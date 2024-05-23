@@ -9,9 +9,9 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 
-class ArticleServiceSpec : DescribeSpec({
+class ArticleQueryServiceSpec : DescribeSpec({
     val loadArticlePort = mockk<LoadArticlePort>()
-    val sut = ArticleService(loadArticlePort)
+    val sut = ArticleQueryService(loadArticlePort)
 
     describe("getArticle") {
         context("article이 존재하면") {

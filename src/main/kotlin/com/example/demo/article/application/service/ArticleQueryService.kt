@@ -8,16 +8,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ArticleService(
+@Transactional(readOnly = true)
+class ArticleQueryService(
     private val loadArticlePort: LoadArticlePort,
 ) : GetArticleUseCase {
-    @Transactional(readOnly = true)
     override fun getArticle(id: Long): Article {
         return loadArticlePort.findArticleById(id)
             ?: throw DomainNotFoundException("id: $id 에 해당하는 게시글이 없습니다.")
     }
 
-    @Transactional(readOnly = true)
     override fun getArticlesByBoardId(boardId: Long): List<Article> {
         return loadArticlePort.findArticlesByBoardId(boardId)
     }

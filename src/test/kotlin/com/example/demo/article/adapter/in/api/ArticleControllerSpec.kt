@@ -1,15 +1,19 @@
 package com.example.demo.article.adapter.`in`.api
 import article.domain.ArticleFixtures
 import com.example.demo.article.adapter.`in`.api.exception.DomainNotFoundException
+import com.example.demo.article.application.port.`in`.CreateArticleUseCase
 import com.example.demo.article.application.port.`in`.GetArticleUseCase
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.mockk.every
+import io.mockk.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
 
 @WebMvcTest(controllers = [ArticleController::class])
 class ArticleControllerSpec : DescribeSpec() {
@@ -18,6 +22,9 @@ class ArticleControllerSpec : DescribeSpec() {
 
     @MockkBean
     private lateinit var getArticleUseCase: GetArticleUseCase
+
+    @MockkBean
+    private lateinit var createArticleUseCase: CreateArticleUseCase
 
     init {
         extension(SpringExtension)
@@ -90,6 +97,55 @@ class ArticleControllerSpec : DescribeSpec() {
                             content {
                                 jsonPath("$.size()") { value(0) }
                             }
+                        }
+                }
+            }
+        }
+
+        describe("POST /api/articles") {
+            context("article 생성 요청이 들어오면") {
+                every { createArticleUseCase.createArticle(any()) } returns ArticleFixtures.article()
+
+                it("article 생성하고 id를 반환") {
+                    mockMvc
+                        .post("/api/articles") {
+                            contentType = MediaType.APPLICATION_JSON
+                            content =
+                                """
+                                {
+                                    "boardId": 1,
+                                    "title": "title",
+                                    "content": "content"
+                                }
+                                """.trimIndent()
+                        }
+                        .andExpect {
+                            status { isOk() }
+                            jsonPath("$.id") { value(1L) }
+                        }
+
+                    verify { createArticleUseCase.createArticle(any()) }
+                }
+            }
+
+            context("입력 정보가 비정상이면") {
+                every { createArticleUseCase.createArticle(any()) } throws IllegalArgumentException("invalid request")
+
+                it("400 Bad Request") {
+                    mockMvc
+                        .post("/api/articles") {
+                            contentType = MediaType.APPLICATION_JSON
+                            content =
+                                """
+                                {
+                                    "boardId": 1,
+                                    "title": "",
+                                    "content": ""
+                                }
+                                """.trimIndent()
+                        }
+                        .andExpect {
+                            status { isBadRequest() }
                         }
                 }
             }
