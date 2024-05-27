@@ -4,4 +4,6 @@ import com.example.demo.article.domain.Article
 
 interface SaveArticlePort {
     fun createArticle(article: Article): Article
+
+    fun updateArticle(article: Article): Article
 }

@@ -20,6 +20,10 @@ class ArticlePersistenceAdapter : LoadArticlePort, SaveArticlePort, DeleteArticl
         TODO("Not yet implemented")
     }
 
+    override fun updateArticle(article: Article): Article {
+        TODO("Not yet implemented")
+    }
+
     override fun deleteArticle(id: Long) {
         TODO("Not yet implemented")
     }

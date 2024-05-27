@@ -4,6 +4,7 @@ import com.example.demo.article.adapter.`in`.api.exception.DomainNotFoundExcepti
 import com.example.demo.article.application.port.`in`.CreateArticleUseCase
 import com.example.demo.article.application.port.`in`.DeleteArticleUseCase
 import com.example.demo.article.application.port.`in`.GetArticleUseCase
+import com.example.demo.article.application.port.`in`.UpdateArticleUseCase
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringExtension
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 
 @WebMvcTest(controllers = [ArticleController::class])
 class ArticleControllerSpec : DescribeSpec() {
@@ -29,6 +31,9 @@ class ArticleControllerSpec : DescribeSpec() {
 
     @MockkBean
     private lateinit var createArticleUseCase: CreateArticleUseCase
+
+    @MockkBean
+    private lateinit var updateArticleUseCase: UpdateArticleUseCase
 
     @MockkBean
     private lateinit var deleteArticleUseCase: DeleteArticleUseCase
@@ -150,6 +155,63 @@ class ArticleControllerSpec : DescribeSpec() {
                                     "content": ""
                                 }
                                 """.trimIndent()
+                        }
+                        .andExpect {
+                            status { isBadRequest() }
+                        }
+                }
+            }
+        }
+
+        describe("PUT /api/articles/{id}") {
+            val requestBody =
+                """
+                {
+                    "boardId": 2,
+                    "title": "another title",
+                    "content": "another content"
+                }
+                """.trimIndent()
+            context("기존 article을 수정하면") {
+                val updatedArticle = ArticleFixtures.anotherArticle(id = 1L)
+                every { updateArticleUseCase.updateArticle(any(), any()) } returns updatedArticle
+
+                it("article 수정하고 200 OK") {
+                    mockMvc
+                        .put("/api/articles/1") {
+                            contentType = MediaType.APPLICATION_JSON
+                            content = requestBody
+                        }
+                        .andExpect {
+                            status { isOk() }
+                            jsonPath("$.id") { value(1L) }
+                        }
+                }
+            }
+
+            context("존재하지 않는 article을 수정하면") {
+                every { updateArticleUseCase.updateArticle(any(), any()) } throws DomainNotFoundException("id: 1 에 해당하는 게시글이 없습니다.")
+
+                it("404 NotFound 반환") {
+                    mockMvc
+                        .put("/api/articles/1") {
+                            contentType = MediaType.APPLICATION_JSON
+                            content = requestBody
+                        }
+                        .andExpect {
+                            status { isNotFound() }
+                        }
+                }
+            }
+
+            context("잘못된 request 일 경우") {
+                every { updateArticleUseCase.updateArticle(any(), any()) } throws IllegalArgumentException("invalid request")
+
+                it("400 BadRequest") {
+                    mockMvc
+                        .put("/api/articles/1") {
+                            contentType = MediaType.APPLICATION_JSON
+                            content = requestBody
                         }
                         .andExpect {
                             status { isBadRequest() }
