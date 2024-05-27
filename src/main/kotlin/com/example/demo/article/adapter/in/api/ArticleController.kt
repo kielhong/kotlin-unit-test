@@ -4,7 +4,9 @@ import com.example.demo.article.adapter.`in`.api.dto.ArticleRequest
 import com.example.demo.article.adapter.`in`.api.dto.ArticleResponse
 import com.example.demo.article.adapter.`in`.api.dto.CommandResponse
 import com.example.demo.article.application.port.`in`.CreateArticleUseCase
+import com.example.demo.article.application.port.`in`.DeleteArticleUseCase
 import com.example.demo.article.application.port.`in`.GetArticleUseCase
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class ArticleController(
     private val getArticleUseCase: GetArticleUseCase,
     private val createArticleUseCase: CreateArticleUseCase,
+    private val deleteArticleUseCase: DeleteArticleUseCase,
 ) {
     @GetMapping("/{id}")
     fun getArticle(
@@ -40,5 +43,12 @@ class ArticleController(
         @RequestBody request: ArticleRequest,
     ): CommandResponse {
         return CommandResponse(createArticleUseCase.createArticle(request).id!!)
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteArticle(
+        @PathVariable id: Long,
+    ) {
+        deleteArticleUseCase.deleteArticle(id)
     }
 }
