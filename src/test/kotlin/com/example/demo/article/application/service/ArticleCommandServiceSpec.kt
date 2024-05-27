@@ -3,19 +3,23 @@ package com.example.demo.article.application.service
 import article.adapter.`in`.api.dto.ArticleRequestFixtures
 import article.domain.ArticleFixtures
 import article.domain.BoardFixtures
+import com.example.demo.article.application.port.out.DeleteArticlePort
 import com.example.demo.article.application.port.out.LoadBoardPort
 import com.example.demo.article.application.port.out.SaveArticlePort
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 
 class ArticleCommandServiceSpec : DescribeSpec({
     val saveArticlePort = mockk<SaveArticlePort>()
+    val deleteArticlePort = mockk<DeleteArticlePort>()
     val loadBoardPort = mockk<LoadBoardPort>()
-    val sut = ArticleCommandService(saveArticlePort, loadBoardPort)
+    val sut = ArticleCommandService(saveArticlePort, deleteArticlePort, loadBoardPort)
 
     describe("createArticle") {
         context("article을 생성") {
@@ -50,6 +54,17 @@ class ArticleCommandServiceSpec : DescribeSpec({
                 }
                     .message shouldBe "존재하지 않는 boardId : ${ArticleRequestFixtures.stub().boardId} 입니다."
             }
+        }
+    }
+
+    describe("deleteArticle") {
+
+        context("article을 삭제") {
+            every { deleteArticlePort.deleteArticle(any()) } just Runs
+
+            sut.deleteArticle(1L)
+
+            verify { deleteArticlePort.deleteArticle(1L) }
         }
     }
 })

@@ -2,16 +2,20 @@ package com.example.demo.article.adapter.`in`.api
 import article.domain.ArticleFixtures
 import com.example.demo.article.adapter.`in`.api.exception.DomainNotFoundException
 import com.example.demo.article.application.port.`in`.CreateArticleUseCase
+import com.example.demo.article.application.port.`in`.DeleteArticleUseCase
 import com.example.demo.article.application.port.`in`.GetArticleUseCase
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.extensions.spring.SpringExtension
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 
@@ -25,6 +29,9 @@ class ArticleControllerSpec : DescribeSpec() {
 
     @MockkBean
     private lateinit var createArticleUseCase: CreateArticleUseCase
+
+    @MockkBean
+    private lateinit var deleteArticleUseCase: DeleteArticleUseCase
 
     init {
         extension(SpringExtension)
@@ -147,6 +154,24 @@ class ArticleControllerSpec : DescribeSpec() {
                         .andExpect {
                             status { isBadRequest() }
                         }
+                }
+            }
+        }
+
+        describe("DELETE /api/articles/{id}") {
+            context("article을 삭제하면") {
+                every { deleteArticleUseCase.deleteArticle(any()) } just Runs
+                // every { deleteArticleUseCase.deleteArticle(any()) } returns Unit
+                // justRun { deleteArticleUseCase.deleteArticle(any()) }
+
+                it("article 삭제하고 200 OK") {
+                    mockMvc
+                        .delete("/api/articles/1")
+                        .andExpect {
+                            status { isOk() }
+                        }
+
+                    verify { deleteArticleUseCase.deleteArticle(1L) }
                 }
             }
         }
