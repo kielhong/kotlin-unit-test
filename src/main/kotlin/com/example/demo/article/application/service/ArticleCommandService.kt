@@ -22,6 +22,7 @@ class ArticleCommandService(
 
         return saveArticlePort.createArticle(
             Article(
+                id = 0,
                 title = request.title,
                 content = request.content,
                 board = board,

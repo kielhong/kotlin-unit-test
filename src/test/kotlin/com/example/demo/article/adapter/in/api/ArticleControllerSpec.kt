@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 
 @WebMvcTest(controllers = [ArticleController::class])
 class ArticleControllerSpec : DescribeSpec() {
@@ -153,6 +154,19 @@ class ArticleControllerSpec : DescribeSpec() {
                         }
                         .andExpect {
                             status { isBadRequest() }
+                        }
+                }
+            }
+        }
+
+        describe("PUT /api/articles/{id}") {
+            context("article을 수정하면") {
+
+                it("article 수정하고 200 OK") {
+                    mockMvc
+                        .put("/api/articles/1")
+                        .andExpect {
+                            status { isOk() }
                         }
                 }
             }

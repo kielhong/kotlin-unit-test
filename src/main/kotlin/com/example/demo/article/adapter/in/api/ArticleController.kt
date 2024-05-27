@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -42,7 +43,14 @@ class ArticleController(
     fun postArticle(
         @RequestBody request: ArticleRequest,
     ): CommandResponse {
-        return CommandResponse(createArticleUseCase.createArticle(request).id!!)
+        return CommandResponse(createArticleUseCase.createArticle(request).id)
+    }
+
+    @PutMapping("/{id}")
+    fun putArticle(
+        @PathVariable id: Long,
+    ): CommandResponse {
+        return CommandResponse(1L)
     }
 
     @DeleteMapping("/{id}")
