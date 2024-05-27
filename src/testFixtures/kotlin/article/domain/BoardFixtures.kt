@@ -6,6 +6,12 @@ object BoardFixtures {
     fun board() =
         Board(
             id = 1L,
-            name = "name",
+            name = "board",
+        )
+
+    fun anotherBoard() =
+        Board(
+            id = 2L,
+            name = "another board",
         )
 }

@@ -10,4 +10,12 @@ object ArticleFixtures {
             title = "title",
             content = "content",
         )
+
+    fun anotherArticle(id: Long = 1L) =
+        Article(
+            id = id,
+            board = BoardFixtures.anotherBoard(),
+            title = "another title",
+            content = "another content",
+        )
 }
