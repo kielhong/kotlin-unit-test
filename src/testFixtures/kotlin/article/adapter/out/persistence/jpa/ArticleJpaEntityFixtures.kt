@@ -8,11 +8,13 @@ object ArticleJpaEntityFixtures {
     fun stub(
         id: Long = 1,
         board: BoardJpaEntity = BoardJpaEntityFixtures.stub(),
+        title: String = "title",
+        content: String = "content",
     ) = ArticleJpaEntity(
         id = id,
         board = board,
-        title = "title",
-        content = "content",
+        title = title,
+        content = content,
         createdAt = ZonedDateTime.now(),
         updatedAt = ZonedDateTime.now(),
     )

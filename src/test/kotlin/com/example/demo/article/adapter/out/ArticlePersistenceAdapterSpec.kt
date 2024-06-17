@@ -1,8 +1,11 @@
 package com.example.demo.article.adapter.out
 
 import article.adapter.out.persistence.jpa.ArticleJpaEntityFixtures
+import article.adapter.out.persistence.jpa.BoardJpaEntityFixtures
+import article.domain.ArticleFixtures
 import com.example.demo.article.adapter.out.jpa.ArticleJpaRepository
 import com.example.demo.article.adapter.out.jpa.BoardJpaRepository
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.Runs
@@ -23,8 +26,8 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
             every { articleJpaRepository.findByIdOrNull(any()) } returns articleJpaEntity
 
             it("article을 반환한다") {
-                val article = sut.findArticleById(1)
-                article?.id shouldBe articleJpaEntity.id
+                val result = sut.findArticleById(1)
+                result?.id shouldBe articleJpaEntity.id
             }
         }
 
@@ -32,8 +35,8 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
             every { articleJpaRepository.findByIdOrNull(any()) } returns null
 
             it("null을 반환한다") {
-                val article = sut.findArticleById(1)
-                article shouldBe null
+                val result = sut.findArticleById(1)
+                result shouldBe null
             }
         }
     }
@@ -43,8 +46,38 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
             every { articleJpaRepository.findAllByBoardId(any()) } returns
                 (1L..3L).map { ArticleJpaEntityFixtures.stub(id = it) }
             it("article 목록을 반환한다") {
-                val articles = sut.findArticlesByBoardId(1)
-                articles.size shouldBe 3
+                val result = sut.findArticlesByBoardId(1)
+                result.size shouldBe 3
+            }
+        }
+    }
+
+    describe("createArticle") {
+        context("article을 생성하면") {
+            val article = ArticleFixtures.article()
+            val boardJpaEntity = BoardJpaEntityFixtures.stub(id = article.board.id)
+            every { boardJpaRepository.findByIdOrNull(any()) } returns boardJpaEntity
+            every { articleJpaRepository.save(any()) } returns
+                ArticleJpaEntityFixtures.stub(
+                    board = boardJpaEntity,
+                    title = article.title,
+                    content = article.content,
+                )
+            it("article이 생성된다") {
+                val result = sut.createArticle(article)
+
+                result.board.id shouldBe article.board.id
+                result.title shouldBe article.title
+                result.content shouldBe article.content
+            }
+        }
+
+        context("board가 존재하지 않는다면") {
+            val article = ArticleFixtures.article()
+            every { boardJpaRepository.findByIdOrNull(any()) } returns null
+
+            it("IllegalArgumentException을 던진다") {
+                shouldThrow<IllegalArgumentException> { sut.createArticle(article) }
             }
         }
     }

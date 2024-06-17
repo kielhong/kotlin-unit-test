@@ -1,5 +1,6 @@
 package com.example.demo.article.adapter.out
 
+import com.example.demo.article.adapter.out.jpa.ArticleJpaEntity
 import com.example.demo.article.adapter.out.jpa.ArticleJpaRepository
 import com.example.demo.article.adapter.out.jpa.BoardJpaRepository
 import com.example.demo.article.application.port.out.DeleteArticlePort
@@ -23,7 +24,13 @@ class ArticlePersistenceAdapter(
             .map { it.toDomain() }
 
     override fun createArticle(article: Article): Article {
-        TODO("Not yet implemented")
+        val boardJpaEntity =
+            boardJpaRepository.findByIdOrNull(article.board.id)
+                ?: throw IllegalArgumentException("Board not found")
+        val articleJpaEntity = ArticleJpaEntity.from(article, boardJpaEntity)
+
+        return articleJpaRepository.save(articleJpaEntity)
+            .toDomain()
     }
 
     override fun updateArticle(article: Article): Article {

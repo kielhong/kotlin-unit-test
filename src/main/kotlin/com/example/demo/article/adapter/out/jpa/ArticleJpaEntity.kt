@@ -25,6 +25,21 @@ data class ArticleJpaEntity(
     val createdAt: ZonedDateTime,
     val updatedAt: ZonedDateTime,
 ) {
+    companion object {
+        fun from(
+            article: Article,
+            boardJpaEntity: BoardJpaEntity,
+        ): ArticleJpaEntity =
+            ArticleJpaEntity(
+                id = article.id,
+                board = boardJpaEntity,
+                title = article.title,
+                content = article.content,
+                createdAt = ZonedDateTime.now(),
+                updatedAt = ZonedDateTime.now(),
+            )
+    }
+
     fun toDomain(): Article =
         Article(
             id = id,
