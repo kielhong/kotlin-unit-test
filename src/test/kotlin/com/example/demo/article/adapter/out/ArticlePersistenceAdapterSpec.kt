@@ -5,8 +5,11 @@ import com.example.demo.article.adapter.out.jpa.ArticleJpaRepository
 import com.example.demo.article.adapter.out.jpa.BoardJpaRepository
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.verify
 import org.springframework.data.repository.findByIdOrNull
 
 class ArticlePersistenceAdapterSpec : DescribeSpec({
@@ -42,6 +45,17 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
             it("article 목록을 반환한다") {
                 val articles = sut.findArticlesByBoardId(1)
                 articles.size shouldBe 3
+            }
+        }
+    }
+
+    describe("deleteArticle") {
+        context("article이 존재하면") {
+            every { articleJpaRepository.deleteById(any()) } just Runs
+            it("article을 삭제한다") {
+                sut.deleteArticle(1)
+
+                verify { articleJpaRepository.deleteById(1) }
             }
         }
     }

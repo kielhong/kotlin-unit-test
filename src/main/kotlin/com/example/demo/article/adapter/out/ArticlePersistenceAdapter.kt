@@ -31,6 +31,6 @@ class ArticlePersistenceAdapter(
     }
 
     override fun deleteArticle(id: Long) {
-        TODO("Not yet implemented")
+        articleJpaRepository.deleteById(id)
     }
 }
