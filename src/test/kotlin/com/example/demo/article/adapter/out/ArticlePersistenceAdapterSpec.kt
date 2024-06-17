@@ -82,6 +82,39 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
         }
     }
 
+    describe("updateArticle") {
+        context("article이 존재하면") {
+            val anotherArticle = ArticleFixtures.anotherArticle()
+            val boardJpaEntity = BoardJpaEntityFixtures.stub(id = anotherArticle.board.id)
+            every { articleJpaRepository.findByIdOrNull(anotherArticle.id) } returns ArticleJpaEntityFixtures.stub()
+            every { boardJpaRepository.findByIdOrNull(any()) } returns boardJpaEntity
+            every { articleJpaRepository.save(any()) } returns
+                ArticleJpaEntityFixtures.stub(
+                    board = boardJpaEntity,
+                    title = anotherArticle.title,
+                    content = anotherArticle.content,
+                )
+
+            it("article을 수정한다") {
+                val result = sut.updateArticle(anotherArticle)
+
+                result.id shouldBe anotherArticle.id
+                result.board.id shouldBe anotherArticle.board.id
+                result.title shouldBe anotherArticle.title
+                result.content shouldBe anotherArticle.content
+            }
+        }
+
+        context("board가 존재하지 않는다면") {
+            val anotherArticle = ArticleFixtures.anotherArticle()
+            every { boardJpaRepository.findByIdOrNull(any()) } returns null
+
+            it("IllegalArgumentException을 던진다") {
+                shouldThrow<IllegalArgumentException> { sut.updateArticle(anotherArticle) }
+            }
+        }
+    }
+
     describe("deleteArticle") {
         context("article이 존재하면") {
             every { articleJpaRepository.deleteById(any()) } just Runs

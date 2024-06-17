@@ -34,7 +34,13 @@ class ArticlePersistenceAdapter(
     }
 
     override fun updateArticle(article: Article): Article {
-        TODO("Not yet implemented")
+        val boardJpaEntity =
+            boardJpaRepository.findByIdOrNull(article.board.id)
+                ?: throw IllegalArgumentException("Board not found")
+        val articleJpaEntity = ArticleJpaEntity.from(article, boardJpaEntity)
+
+        return articleJpaRepository.save(articleJpaEntity)
+            .toDomain()
     }
 
     override fun deleteArticle(id: Long) {
