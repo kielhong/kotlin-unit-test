@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import java.time.ZonedDateTime
 
@@ -15,6 +16,7 @@ data class ArticleJpaEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
     val board: BoardJpaEntity,
     @Column(nullable = false)
     val title: String,
@@ -23,7 +25,7 @@ data class ArticleJpaEntity(
     val createdAt: ZonedDateTime,
     val updatedAt: ZonedDateTime,
 ) {
-    fun toDomain() =
+    fun toDomain(): Article =
         Article(
             id = id,
             board = board.toDomain(),

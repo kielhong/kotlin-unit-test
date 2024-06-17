@@ -18,9 +18,9 @@ class ArticlePersistenceAdapter(
         articleJpaRepository.findByIdOrNull(id)
             ?.toDomain()
 
-    override fun findArticlesByBoardId(boardId: Long): List<Article> {
-        TODO("Not yet implemented")
-    }
+    override fun findArticlesByBoardId(boardId: Long): List<Article> =
+        articleJpaRepository.findAllByBoardId(boardId)
+            .map { it.toDomain() }
 
     override fun createArticle(article: Article): Article {
         TODO("Not yet implemented")

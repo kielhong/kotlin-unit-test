@@ -34,4 +34,15 @@ class ArticlePersistenceAdapterSpec : DescribeSpec({
             }
         }
     }
+
+    describe("findArticlesByBoardId") {
+        context("board에 속한 article이 존재하면") {
+            every { articleJpaRepository.findAllByBoardId(any()) } returns
+                (1L..3L).map { ArticleJpaEntityFixtures.stub(id = it) }
+            it("article 목록을 반환한다") {
+                val articles = sut.findArticlesByBoardId(1)
+                articles.size shouldBe 3
+            }
+        }
+    }
 })

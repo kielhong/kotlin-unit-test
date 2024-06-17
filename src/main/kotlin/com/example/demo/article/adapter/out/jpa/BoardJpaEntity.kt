@@ -13,7 +13,7 @@ data class BoardJpaEntity(
     val id: Long = 0,
     val name: String,
 ) {
-    fun toDomain() =
+    fun toDomain(): Board =
         Board(
             id = id,
             name = name,
