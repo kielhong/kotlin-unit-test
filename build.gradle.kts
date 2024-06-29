@@ -30,7 +30,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-runner-junit5:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest:kotest-assertions-core:${Libs.Versions.KOTEST}")
-    testImplementation("io.kotest:kotest-property:${Libs.Versions.KOTEST}")
+    testImplementation("io.kotest:kotest-assertions-json:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest:kotest-framework-datatest:${Libs.Versions.KOTEST}")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:${Libs.Versions.KOTEST_EXTENSION_SPRING}")
     testImplementation("io.mockk:mockk:${Libs.Versions.MOCKK}")
