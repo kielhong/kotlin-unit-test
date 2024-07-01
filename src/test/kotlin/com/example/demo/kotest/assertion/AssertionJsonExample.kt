@@ -19,7 +19,7 @@ class AssertionJsonExample : FunSpec({
 
         json.shouldBeValidJson()
         json.shouldBeJsonObject()
-        json shouldEqualJson "{\"name\": \"kotlin\", \"age\": 10}"
+        json shouldEqualJson "{\"age\": 10, \"name\": \"kotlin\"}"
         json shouldContainJsonKey "name"
     }
 
@@ -35,7 +35,8 @@ class AssertionJsonExample : FunSpec({
             ]
         """.trimIndent()
 
-        jsonArray.shouldBeValidJson()
-        jsonArray.shouldBeJsonArray()
+        jsonArray
+            .shouldBeValidJson()
+            .shouldBeJsonArray()
     }
 })
