@@ -1,30 +1,20 @@
-package com.example.demo.mockk
+package com.example.demo.mockk.mock
 
 import io.kotest.core.spec.style.FunSpec
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.confirmVerified
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 
 class MockkTest : FunSpec({
-    val car1 = mockk<Car>()
-
-    beforeEach {
-        MockKAnnotations.init(this)
-    }
-
     test("mockk test") {
+        val car1 = mockk<Car>()
+
         every { car1.drive("NORTH") } returns "OK"
-        every { car1.drive(any()) } answers { "OK" }
-        every { car1.drive(ofType(String::class)) } answers { "OK" }
-        every { car1.brake() } just Runs
-        every { car1.brake() } returns Unit
-        justRun { car1.brake() }
 
         car1.drive("NORTH") // returns OK
 
@@ -37,11 +27,6 @@ class MockkTest : FunSpec({
 
 class Car {
     fun drive(direction: String): String {
-        println("drive to $direction")
-        return "OK"
-    }
-
-    fun brake() {
-        println("brake")
+        TODO("Not Implemented")
     }
 }
