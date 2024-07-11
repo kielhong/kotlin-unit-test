@@ -5,6 +5,7 @@ import io.kotest.assertions.throwables.shouldThrowMessage
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.date.shouldBeAfter
 import io.kotest.matchers.date.shouldBeBefore
+import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveKeys
 import io.kotest.matchers.maps.shouldHaveSize
