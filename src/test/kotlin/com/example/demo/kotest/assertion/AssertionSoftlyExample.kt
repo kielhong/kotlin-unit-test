@@ -10,7 +10,7 @@ class AssertionSoftlyExample : FunSpec({
     test("String length 는 문자열의 길이를 반환해야 한다") {
         assertSoftly {
             "test".length shouldBe 4
-            //"".length shouldBe 1        // fail
+//            "".length shouldBe 1        // fail
             "hello".length shouldBeGreaterThan 2
         }
     }
