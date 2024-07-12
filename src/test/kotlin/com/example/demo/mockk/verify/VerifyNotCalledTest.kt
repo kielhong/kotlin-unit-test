@@ -7,9 +7,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 
-class VerifyTest : FunSpec({
-    test("verify") {
+class VerifyNotCalledTest : FunSpec({
+    test("verify not called") {
         val car = mockk<Car>()
+        val car2 = mockk<Car>()
 
         every { car.drive("NORTH") } returns "OK"
         every { car.drive("SOUTH") } returns "OK"
@@ -18,12 +19,7 @@ class VerifyTest : FunSpec({
         car.drive("NORTH")
         car.drive("SOUTH")
 
-        verify {
-            car.drive("NORTH")
-            car.drive("SOUTH")
-        }
-        verify(exactly = 1) { car.drive("NORTH") }
-        verify(atLeast = 1) { car.drive("NORTH") }
-        verify(atMost = 1) { car.drive("NORTH") }
+        verify(exactly = 0) { car.drive("WEST") }
+        verify{ car2 wasNot Called }
     }
 })
