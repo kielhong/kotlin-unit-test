@@ -5,12 +5,15 @@ import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.confirmVerified
 import io.mockk.every
+import io.mockk.impl.annotations.MockK
 import io.mockk.just
 import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verify
 
 class MockkTest : FunSpec({
+    val car2 = mockk<Car>()
+
     test("mockk test") {
         val car1 = mockk<Car>()
 
