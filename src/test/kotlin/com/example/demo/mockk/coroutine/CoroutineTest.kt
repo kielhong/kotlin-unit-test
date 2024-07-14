@@ -12,7 +12,7 @@ class CoroutineTest : FunSpec({
     test("coroutine mock") {
         val car = mockk<Car>()
 
-        coEvery { car.drive("NORTH") } returns "OK"
+        coEvery { car.drive(any()) } returns "OK"
 
         car.drive("NORTH") shouldBe "OK"
 

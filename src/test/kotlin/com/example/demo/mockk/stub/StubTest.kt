@@ -23,7 +23,7 @@ class StubTest : FunSpec({
 
         every { car.drive(any()) } returns "OK"
 
-        car.drive("NORTH") shouldBe "OK"
+        car.drive("SOUTH") shouldBe "OK"
     }
 
     test("stub arg matching class") {
@@ -45,7 +45,7 @@ class StubTest : FunSpec({
     test("stub returns many") {
         val car = mockk<Car>()
 
-        every { car.drive(eq("NORTH")) } returnsMany listOf("OK", "ERROR")
+        every { car.drive(any()) } returnsMany listOf("OK", "ERROR")
 
         car.drive("NORTH") shouldBe "OK"
         car.drive("NORTH") shouldBe "ERROR"
@@ -54,7 +54,7 @@ class StubTest : FunSpec({
     test("stub returns arg") {
         val car = mockk<Car>()
 
-        every { car.drive(eq("NORTH")) } returnsArgument 0
+        every { car.drive(any()) } returnsArgument 0
 
         car.drive("NORTH") shouldBe "NORTH"
     }
@@ -69,7 +69,7 @@ class StubTest : FunSpec({
 })
 
 class MockClass {
-    fun sum(a: Int, b: Int): Unit {
+    fun sum(a: Int, b: Int) {
         println(a + b)
     }
 }

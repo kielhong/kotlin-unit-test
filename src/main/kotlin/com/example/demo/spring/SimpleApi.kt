@@ -1,6 +1,8 @@
 package com.example.demo.spring
 
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -14,4 +16,13 @@ class SimpleApi(
         }
         return "NOT FOUND"
     }
+
+    @PostMapping("/api/simple")
+    fun postInfo(@RequestBody request: Request): Unit {
+        simpleUseCase.create(request)
+    }
 }
+
+data class Request(
+    val name: String
+)

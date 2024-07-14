@@ -11,11 +11,11 @@ class ConfirmedVerifyTest : FunSpec({
     test("confirmed verify") {
         val car = mockk<Car>()
 
-        every { car.drive("NORTH") } returns "OK"
+        every { car.drive(any()) } returns "OK"
 
         car.drive("NORTH")
 
-        //verify { car.drive("NORTH") }
+        verify { car.drive("NORTH") }
 
         confirmVerified(car)
     }

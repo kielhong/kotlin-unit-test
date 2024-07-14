@@ -34,5 +34,16 @@ class SimpleApiMockkBeanTest : FunSpec() {
             }
             confirmVerified(simpleUseCase)
         }
+
+        test("mockkbean another test") {
+            every { simpleUseCase.exist() } returns false
+
+            simpleApi.getInfo() shouldBe "NOT FOUND"
+
+            verify {
+                simpleUseCase.exist()
+            }
+            confirmVerified(simpleUseCase)
+        }
     }
 }

@@ -27,4 +27,5 @@ object ObjMock {
 
 enum class EnumMock(val value: Int) {
     CONSTANT(35),
+    VALUE(30)
 }

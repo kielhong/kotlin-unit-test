@@ -15,11 +15,12 @@ class VerifyNotCalledTest : FunSpec({
         every { car.drive("NORTH") } returns "OK"
         every { car.drive("SOUTH") } returns "OK"
         every { car.drive("WEST") } returns "OK"
+        every { car2.drive("EAST") } returns "OK"
 
         car.drive("NORTH")
         car.drive("SOUTH")
 
         verify(exactly = 0) { car.drive("WEST") }
-        verify{ car2 wasNot Called }
+        verify { car2 wasNot Called }
     }
 })

@@ -12,7 +12,7 @@ class VerifyWithArgTest : FunSpec({
     test("verify") {
         val car = mockk<Car>()
 
-        every { car.drive("NORTH") } returns "OK"
+        every { car.drive(any()) } returns "OK"
 
         car.drive("NORTH")
 

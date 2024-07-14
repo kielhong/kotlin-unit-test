@@ -2,6 +2,7 @@ package com.example.demo.mockk.capture
 
 import com.example.demo.mockk.mock.Car
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -16,6 +17,6 @@ class CaptureTest : FunSpec({
         car.drive("NORTH")
 
         println(slot.isCaptured)
-        println(slot.captured)
+        slot.captured shouldBe "NORTH"
     }
 })

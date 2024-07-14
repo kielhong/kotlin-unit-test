@@ -21,6 +21,10 @@ class SimpleApiSpykBeanTest : FunSpec() {
     private lateinit var simpleService: SimpleService
 
     init {
+        test("spykbean test0") {
+            simpleApi.getInfo() shouldBe "Hello, World!"
+        }
+
         test("spykbean test") {
             every { simpleService.exist() } returns true
 
